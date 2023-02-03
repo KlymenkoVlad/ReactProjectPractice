@@ -1,6 +1,6 @@
 import './app-filter.css';
 
-const AppFilter = () => {
+const AppFilter = (props) => {
     return (
         <div className="btn-group">
             <button 
@@ -15,7 +15,8 @@ const AppFilter = () => {
             </button>
             <button 
                 className="btn btn-outline-light"
-                type="button">
+                type="button"
+                onClick={props.sortBySalary}>
                     З/П больше 1000$
             </button>
         </div>
