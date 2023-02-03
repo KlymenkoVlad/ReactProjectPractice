@@ -122,9 +122,7 @@ class App extends Component {
         const {data, term} = this.state;
         const employees = this.state.data.length;
         const increased = this.state.data.filter(item => item.increase).length;
-        const visibleData = this.searchEmp(data, term);
-        const visibleDataSalaryFilter = this.searchBySalary(visibleData)
-        const visibleDataRender = this.searchByRise(visibleDataSalaryFilter)
+        const visibleDataRender = this.searchByRise(this.searchBySalary(this.searchEmp(data, term)))
 
         return (
             <div className="app">
