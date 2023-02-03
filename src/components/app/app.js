@@ -13,9 +13,9 @@ class App extends Component {
         super(props)
         this.state = {
             data: [
-                {name: 'John L.', salary: 2000, increase: false, rise: true, id: 1},
-                {name: 'Mike C.', salary: 1500, increase: true, rise: false, id: 2},
-                {name: 'Tom K.', salary: 3000, increase: false, rise: false, id: 3},
+                {name: 'John L.', salary: 600, increase: false, rise: true, id: 1},
+                {name: 'Mike C.', salary: 500, increase: true, rise: false, id: 2},
+                {name: 'Tom K.', salary: 2000, increase: false, rise: false, id: 3},
                 {name: 'Jane D.', salary: 1700, increase: true, rise: false, id: 4},
                 {name: 'Alex P.', salary: 1900, increase: false, rise: true, id: 5},
                 {name: 'Sarah M.', salary: 2100, increase: true, rise: false, id: 6},
@@ -24,12 +24,14 @@ class App extends Component {
                 {name: 'Emma W.', salary: 2500, increase: false, rise: true, id: 9},
                 {name: 'Chris B.', salary: 2000, increase: true, rise: false, id: 10},
                 {name: 'Linda H.', salary: 1400, increase: false, rise: false, id: 11},
-                {name: 'Greg S.', salary: 3200, increase: true, rise: false, id: 12},
-                {name: 'Amanda K.', salary: 1800, increase: false, rise: true, id: 13},
-                {name: 'Ryan D.', salary: 1900, increase: true, rise: false, id: 14},
-                {name: 'Nina F.', salary: 2400, increase: false, rise: false, id: 15}
+                {name: 'Greg S.', salary: 2200, increase: true, rise: false, id: 12},
+                {name: 'Amanda K.', salary: 800, increase: false, rise: true, id: 13},
+                {name: 'Ryan D.', salary: 900, increase: true, rise: false, id: 14},
+                {name: 'Nina F.', salary: 1400, increase: false, rise: false, id: 15}
             ],
-            term: ''
+            term: '',
+            salarySort: false,
+            riseSort: false
         }
         this.maxId = this.state.data.length + 1;
     }
@@ -78,19 +80,42 @@ class App extends Component {
         }
 
         return items.filter(item => {
-            return item.name.indexOf(term) > -1
+            const visibleData = item.name.indexOf(term) > -1
+            return visibleData
         })
 
     }
 
     searchBySalary = (items) => {
-        return items.filter(item => {
-            return item.salary > 2000
-        })
+        if (this.state.salarySort) {
+            return items.filter(item => {
+                return item.salary > 1000
+            })
+        } else {
+            return items;
+        }
+    }
+
+    searchByRise = (items) => {
+        if (this.state.riseSort) {
+            return items.filter(item => {
+                return item.rise === true
+            })
+        } else {
+            return items;
+        }
     }
 
     onUpdateSearch = (term) => {
         this.setState({term})
+    }
+
+    onUpdateSalary = (salarySortValue) => {
+        this.setState({salarySort: salarySortValue})
+    }
+
+    onUpdateRise = (riseSortValue) => {
+        this.setState({riseSort: riseSortValue})
     }
 
     render() {
@@ -98,6 +123,8 @@ class App extends Component {
         const employees = this.state.data.length;
         const increased = this.state.data.filter(item => item.increase).length;
         const visibleData = this.searchEmp(data, term);
+        const visibleDataSalaryFilter = this.searchBySalary(visibleData)
+        const visibleDataRender = this.searchByRise(visibleDataSalaryFilter)
 
         return (
             <div className="app">
@@ -107,11 +134,13 @@ class App extends Component {
     
                 <div className="search-panel">
                     <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
-                    <AppFilter sortBySalary={this.searchBySalary}/>
+                    <AppFilter 
+                        sortBySalary={this.onUpdateSalary}
+                        sortByRise={this.onUpdateRise}/>
                 </div>
     
                 <EmployeesList 
-                    data={visibleData}
+                    data={visibleDataRender}
                     onDelete={this.deleteItem}
                     onToggleProp={this.onToggleProp}/>
                 <EmployessAddForm onAdd={this.addItem}/>
