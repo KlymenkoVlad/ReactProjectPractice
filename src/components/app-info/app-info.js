@@ -3,7 +3,7 @@ import './app-info.css';
 const AppInfo = ({employees, increase}) => {
     return (
         <div className="app-info">
-            <h1>Учет сотрудников в компании MyCorp</h1>
+            <h1>Учет сотрудников в компании Boston Scientific</h1>
             <h2>Общее число сотрудников: {employees} </h2>
             <h2>Премию получат: {increase}</h2>
         </div>
